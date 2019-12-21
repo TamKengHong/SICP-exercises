@@ -1,0 +1,14 @@
+#lang sicp
+(define (square x) (* x x))
+(define (cube-iter guess x)
+  (if (good-enough? guess x)
+      guess
+      (cube-iter (improve guess x) x)))
+(define (improve guess x)
+  (/ (+ (/ x (square guess)) (* 2 guess)) 3))
+;i just changed improve guess to fit the formula for finding cbrt
+(define (good-enough? guess x)
+  (< (abs (/ (- (improve guess x) guess)
+             guess))
+     0.0001))
+(define (cbrt x) (cube-iter 1 x))

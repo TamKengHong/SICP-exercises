@@ -1,0 +1,6 @@
+#lang sicp
+; 1/phi = 0.61803398875
+(define (cont-frac n d k)
+  (if (< k 1)
+      0
+      (/ n (+ d (cont-frac (n (1) (+ 1 d) (- k 1))))))
