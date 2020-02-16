@@ -1,0 +1,82 @@
+#lang sicp
+;copy paste all we need.
+(define (entry tree) (car tree))
+(define (left-branch tree) (cadr tree))
+(define (right-branch tree) (caddr tree))
+(define (make-tree entry left right)
+  (list entry left right))
+
+(define (tree->list-1 tree)
+  (if (null? tree)
+    '()
+    (append (tree->list-1 (left-branch tree))
+            (cons (entry tree)
+                  (tree->list-1
+                   (right-branch tree))))))
+
+;ok so if tree is null then it returns nil, otherwise it appends the
+;result of doing tree-list1 to left branch to the (cons (entry tree))
+;and result of doing tree-list1 to right branch.
+;what this does is that for every subtree, it appends the left side which
+;is done, to the cons of the entry and all the right side which is also
+;done, to form a complete list. Now look at base case, if left side empty,
+;then append nil to cons entry with all the right branches remaining to
+;form a right list. If right side empty, then we append left side with cons
+;entry nil to form a left list. If both empty, then just append nil with
+;cons entry nil to form a list with only one element.
+;then proceeding like this, we just append up the left list with right list
+;as all the elements are captured.
+
+(define (tree->list-2 tree)
+  (define (copy-to-list tree result-list)
+    (if (null? tree)
+        result-list
+        (copy-to-list (left-branch tree)
+                      (cons (entry tree)
+                            (copy-to-list
+                             (right-branch tree)
+                             result-list)))))
+  (copy-to-list tree '()))
+;if null, return result list. else, we copy the left-branch to list
+;with the result of cons all the entries of copy to list of the right branch
+;so each right branch is the result of all the right entries copied tgt
+;and then we use that. Therefore we cons up all the right elements in order,
+;like for each left branch we cons the right ones in order. idk.
+
+;lets also make up the 3 trees shown in fig 2.16
+(define tree1 (make-tree 7
+                         (make-tree 3
+                                    (make-tree 1 nil nil)
+                                    (make-tree 5 nil nil))
+                         (make-tree 9
+                                    nil
+                                    (make-tree 11 nil nil))))
+(define tree2 (make-tree 3
+                         (make-tree 1 nil nil)
+                         (make-tree 7
+                                    (make-tree 5 nil nil)
+                                    (make-tree 9
+                                               nil
+                                               (make-tree 11 nil nil)))))
+(define tree3 (make-tree 5
+                         (make-tree 3
+                                    (make-tree 1 nil nil)
+                                    nil)
+                         (make-tree 9
+                                    (make-tree 7 nil nil)
+                                    (make-tree 11 nil nil))))
+;now lets test these out with tree-list1 and tree-list2
+;for the first procedure: going in order tree1 then tree2 then tree3,
+;all 3 trees produce (1 3 5 7 9 11)
+;for the second procedure:
+;they also produce (1 3 5 7 9 11)
+
+;lets check the program to see what tree-list1 and 2 does.
+;ok so since tree-list1 uses append and travels all n elements its n^2
+;while tree-list2 uses copy to list and its cons so its o(n)
+
+;after reading up more, both are in-order tree traversals, so they give
+;in sorted order. the pattern is: 1. go left 2. do stuff to entry 3. go right
+;https://www.youtube.com/watch?v=5dySuyZf9Qg
+;heres how in order tree traversal works, so if you have a balanced
+;binary search tree, by doing the 3 steps u always have a sorted list.

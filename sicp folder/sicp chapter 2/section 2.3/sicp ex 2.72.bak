@@ -1,0 +1,7 @@
+#lang sicp
+;the tree will usually be log n deep as it splits into two branches and so on
+;so it will be log n growth to encode a symbol. usually o(log n)
+;however, due to the special case in 2.71, it is n deep, and will have an
+;o(n) order of growth for the least frequent symbols as it travels all the
+;way down, but o(1) for most frequent as its on top of the tree, avg case
+;is still o(n)

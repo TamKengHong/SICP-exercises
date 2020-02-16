@@ -1,0 +1,10 @@
+#lang sicp
+;the tree will look like this. one main branch going down and then for every
+;branch it splits, like /\
+;                        /\
+;                         /\ ...
+;this is because the sum of the previous 2 least valued symbols will always
+;be less than the 3rd one. eg. 1+2 = 3 less than 4, 3+4 less than 8
+;and so on. thus, the most frequent symbol is always at the top so 1 bit
+;is used to encode it, while the least frequent is at the bottom where
+;n-1 bits are used to encode it.

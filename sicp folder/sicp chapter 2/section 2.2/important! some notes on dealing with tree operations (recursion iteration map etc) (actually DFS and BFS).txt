@@ -1,0 +1,58 @@
+There are two main ways that we can deal with tree operations.
+1. firstly, we can use tree recursion, we treat the tree as having sub-trees to
+recurse through.
+for example scale-tree
+
+(define (scale-tree tree factor)
+ (cond ((null? tree) nil)
+       ((not (pair? tree)) (* tree factor))
+       (else (cons (scale-tree (car tree) factor)
+                   (scale-tree (cdr tree) factor)))))
+
+(scale-tree (list 1 (list 2 (list 3 4) 5) (list 6 7)) 10)
+(10 (20 (30 40) 50) (60 70))
+
+so a general method would be: firstly, we determine the base cases,
+like what happens if the next sub-tree (the car or cdr of the tree) is nil or
+not-pair. The base values will terminate the tree recursion as it gives
+the values of all the leaves of the tree. next, if its a pair, then we need 
+to cons the car and cdr of the tree while applying the procedure to it.
+this is because cons of car and cdr of the tree gives the original tree,
+and then we just go deep into recursion until it hits the base values where
+u can just return the tree, since we consed the whole tree up while applying
+the values to all the leaves.
+
+2. A different method and likely more general method would be to iterate through 
+the list like deep-reverse, treating the tree as a list (sequence) of lists.
+
+(define (deep-reverse l)
+  (define (iter remaining result)
+    (cond ((null? remaining) result)
+          ((pair? (car remaining))
+            (iter (cdr remaining) (cons (deep-reverse (car remaining)) result)))
+          (else (iter (cdr remaining) (cons (car remaining) result)))))
+  (iter l nil))
+
+This just runs thru the list, car'ing down all the way and applying the procedure
+until its the end of the last possible list, then it goes to the next iteration
+as it cdrs down the list of lists. This is harder to implement but may be more
+general as i could only see this deep-reverse used instead of using recursion,
+as tree recursion may not be able to apply the procedure each to the sub-trees
+and can only have base cases.
+
+3. This iterative cdring down the list solution for trees may be represented by
+using the procedure map, as map applies the procedure to all elements of the list,
+we can just iteratively map the list car'ing downwards, and then all sublists.
+this will apply map to the top list, and then to each of the car'ed down sublists,
+and map itself will apply the procedure to each element of the list. This results
+in the procedure being applied to all elements of the tree as sublists are all 
+mapped.
+
+this is shown here.
+(define (deep-reverse tree)
+  (if (pair? tree)
+      (reverse (map deep-reverse tree))
+      tree))
+
+This is all that i have learnt for today during my study session (15 jan 2020).
+the cumulation of all my efforts and knowledge :P

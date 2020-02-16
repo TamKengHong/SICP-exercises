@@ -1,0 +1,8 @@
+#lang sicp
+(define (deep-reverse a)
+ (define (iter a result)
+   (cond
+     ((pair? a) (iter (car a) (cons (reverse a) result)))
+     (else (iter (cdr a) (cons a result))))
+
+;i will cont tmr

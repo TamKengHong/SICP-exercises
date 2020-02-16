@@ -1,0 +1,73 @@
+#lang sicp
+;copy paste all we need.
+(define (filter predicate sequence)
+  (cond ((null? sequence) nil)
+        ((predicate (car sequence))
+         (cons (car sequence)
+               (filter predicate (cdr sequence))))
+        (else (filter predicate (cdr sequence)))))
+
+(define (filter2 predicate sequence s)
+  (cond ((null? sequence) nil)
+        ((predicate (car sequence) s)
+         (cons (car sequence)
+               (filter2 predicate (cdr sequence) s)))
+        (else (filter2 predicate (cdr sequence) s))))
+
+(define (accumulate op initial sequence)
+  (if (null? sequence)
+      initial
+      (op (car sequence)
+          (accumulate op initial (cdr sequence)))))
+
+(define (enumerate-interval low high)
+  (if (> low high)
+      nil
+      (cons low (enumerate-interval (+ low 1) high))))
+
+(define (flatmap proc seq)
+  (accumulate append nil (map proc seq)))
+
+;so we need to enumerate 3 intervals, make them into list of triples,
+;then we check each triple if they sum to s.
+
+(define (sum-to-s? triples s)
+  (= (+ (car triples) (cadr triples) (caddr triples)) s))
+
+;since the positive integers are distinct, we will need to filter out triples
+;where i=j, j=k, or i=k. ok both works.
+
+(define (unique-triples seq)
+  (define (unique? triples)
+    (not (or (= (car triples) (cadr triples))
+             (= (car triples) (caddr triples))
+             (= (cadr triples) (caddr triples)))))
+  (filter unique? seq))
+
+;now to generate all lists of triples <= n
+
+(define (list-of-triples n)
+  (flatmap (lambda (i)
+             (flatmap (lambda (j)
+                        (map (lambda (k) (list i j k))
+                             (enumerate-interval 1 n)))
+                      (enumerate-interval 1 n)))
+           (enumerate-interval 1 n)))
+;hell yea this works, took some time to debug. time to explain.
+;so for each i in (1 2 ... n), for each j in (1 2 ... n) for each k in
+;(1 2 ... n), we take each i, j, k in the list and do a map which will
+;produce a new list of (i j k) for each i j and k called.
+;we use flatmap to flatten the list if not there will be many brackets
+;due to map creating a list of lists, so we need to append it all which
+;is just flatmaps all the way.
+
+(define (triples-sum-to-s n s)
+  (filter2 sum-to-s? (unique-triples (list-of-triples n)) s))
+;sum-to-s takes in 2 arguments instead of 1, we need to fix this somehow...
+;ok i invented filter2 which takes in 2 arguments in its predicate, this
+;fixes it.
+                                
+  
+
+
+  
