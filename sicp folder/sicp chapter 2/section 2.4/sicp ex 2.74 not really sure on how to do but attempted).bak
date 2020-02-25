@@ -1,0 +1,57 @@
+#lang sicp
+;using the data directed programming approach that we just learnt, and since
+;diff sets have diff operations on them, for our get record procedure, we
+;could find the type of set being used, and do the specific set operation
+;to obtain the record.
+;for our procedure to work, we will need the type information of the
+;data structure of the set being used, for example ('bin-tree records)
+;which is a binary tree structure storing the records.
+;a record in this case has a key attached to it, so we can find the
+;record (like an ID tag).
+
+
+;ok lets start
+(define (get-record specified-file specified-record)
+  (get (file-name-key specified-file) (employee-name-key specified-record)))
+
+;procedures file-name-key and employee-name-key extracts the keys from
+;the records, probs store them in a list structure where key is the car
+;so we need to get the keys for each of the file and records specified to
+;identify them and retrieve it from the table of filename/employeename
+
+;to get salary for HQ, we need to use get-record to find the employee's
+;record, then do some operations based on the data structure of the
+;record to get the salary from it.
+
+;now we need a way to extract the procedures to be done based on diff
+;data structures. for example, a record with bin-tree needs a procedure
+;which can get the salary of a bin-tree record. likewise list structures etc.
+
+;lets draw some inspiration from apply-generic. lookup is a procedure
+;that will return the salary given a record, based off element-of-set?
+;procedure. we will leave implementations of these stuff to other ppl.
+
+
+(define (get-salary specified-file specified-record)
+  (apply-generic 'lookup-salary
+                 (get-record specified-file specified-record)))
+
+;this will apply a generic lookup-salary procedure based on diff
+;representations to the employee record. so given a record, it
+;is a generic procedure that can always look up the salary.
+;the record will need to have information regarding its data structure.
+
+(define (find-employee-record employee-name personnel-files)
+  (if (null? personnel-files)
+      #f
+      (let ((record (get-record employee-name (car personnel-files))))
+        (if record
+            record
+            (find-employee-record employee-name (cdr personnel-files))))))
+
+;this goes down the list, trying to get-record for each files and going down
+;if there is a record, then return it, otherwise go down the list and
+;return false if theres nothing.
+
+;if take over new company, just do a put into the table of files and records
+;the rest of the info wont change
