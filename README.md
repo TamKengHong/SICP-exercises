@@ -8,7 +8,7 @@ I try to provide comments on how I came about to the solutions so that I can re-
 
 # Progress
 First chapter is done!
-Chapter 2.1, 2.2, 2.3, 2.4 is done!
+Chapter 2 done! Started on Chapter 3!
 
 # To-do
 Make a sicp lecture guide to show which parts of the lecture correspond to which parts of the book.
