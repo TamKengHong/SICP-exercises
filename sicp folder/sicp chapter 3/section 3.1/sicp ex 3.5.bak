@@ -1,0 +1,42 @@
+#lang sicp
+;ok first we have
+(define (monte-carlo trials experiment)
+  (define (iter trials-remaining trials-passed)
+    (cond ((= trials-remaining 0)
+           (/ trials-passed trials))
+          ((experiment)
+           (iter (- trials-remaining 1)
+                 (+ trials-passed 1)))
+          (else
+           (iter (- trials-remaining 1)
+                 trials-passed))))
+  (iter trials 0))
+
+(define (random-in-range low high)
+  (let ((range (- high low)))
+    (+ low (random range))))
+
+;now we need:
+
+(define (estimate-integral P x1 x2 y1 y2 n)
+  (* (* (- x1 x2)
+        (- y1 y2))
+     (monte-carlo n P)))
+
+(define (in-circle) 
+  (>= 1 (+ (square (random-in-range -1.0 1.0)) 
+           (square (random-in-range -1.0 1.0)))))
+
+(define (square x) (* x x))
+
+(define (estimate-pi) 
+  (estimate-integral in-circle 1.0 -1.0 1.0 -1.0 100000))
+
+;basically, what estimate integral does is that it multiplies the area
+;of the rectangle given with the fraction of points inside the region
+;given by the monte-carlo procedure.
+
+;next, in-circle will test whether the point (x,y) lies in the unit circle,
+;as x^2 + y^2 = 1 is the unit circle.
+
+;to estimate pi, is just the area of the circle as pi*r^2 = pi.

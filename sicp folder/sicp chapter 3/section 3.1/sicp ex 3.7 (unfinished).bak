@@ -1,0 +1,26 @@
+#lang sicp
+;from ex 3.3,
+(define (make-account balance password)
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount))
+               balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount))
+    balance)
+  (define (dispatch p m)
+    (cond ((not (eq? p password)) (error "Incorrect password"))
+          ((eq? m 'withdraw) withdraw)
+          ((eq? m 'deposit) deposit)
+          (else (error "Unknown request: MAKE-ACCOUNT"
+                       m))))
+  dispatch)
+
+;now lets time to do up make-joint.
+;we will need a selector to extract out the password of the account, to
+;compare 
+
+(define (make-joint account 1st-pass new-pass)
+  (cond ((eq? 1st-pass password)
+         (define 
