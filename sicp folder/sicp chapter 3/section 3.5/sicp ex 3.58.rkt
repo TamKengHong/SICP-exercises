@@ -1,0 +1,11 @@
+#lang sicp
+
+;this produces a stream of integers that are the representation of
+;num/denom in base radix.
+
+;basically, u can tell by the head of stream is always the quotient,
+;and the tail of the stream is the remainder. then u expand it again and
+;again.
+
+;eg, (expand 1 7 10) = decimal expansion of 1/7.
+;likewise, (expand 3 8 10) = (3 7 5 0 0 0...)

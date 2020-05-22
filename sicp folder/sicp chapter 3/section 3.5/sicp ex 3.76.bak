@@ -1,0 +1,17 @@
+#lang sicp
+
+;first we just copy the style of the code.
+;then we do a cons (car s) first to make the procedure correctly avg each
+;value of sense data with the previous one. without the start, it would be
+;avging the future values.
+
+(define (smooth s)
+  (let ((avpt (/ (+ (stream-car s)
+                    (stream-car (stream-cdr s)))
+                 2)))
+    (cons-stream
+     (stream-car s)
+     (cons-stream
+      avpt
+      (smooth (stream-cdr s))))))
+              
