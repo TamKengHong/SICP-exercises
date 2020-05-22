@@ -8,8 +8,11 @@ I try to provide comments on how I came about to the solutions so that I can re-
 
 # Progress
 Chapter 1 done!
+
 Chapter 2 done! 
+
 Chapter 3 done!
+
 Started on Chapter 4.
 
 # To-do
