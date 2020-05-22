@@ -7,8 +7,10 @@ I first watch the MIT SICP lectures before starting on reading the relevant part
 I try to provide comments on how I came about to the solutions so that I can re-solve the exercises in the future + other programmers may benefit from my comments and solutions.
 
 # Progress
-First chapter is done!
-Chapter 2 done! Started on Chapter 3!
+Chapter 1 done!
+Chapter 2 done! 
+Chapter 3 done!
+Started on Chapter 4.
 
 # To-do
 Make a sicp lecture guide to show which parts of the lecture correspond to which parts of the book.
