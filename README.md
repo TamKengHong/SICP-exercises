@@ -15,5 +15,7 @@ Chapter 3 done!
 
 Started on Chapter 4.
 
+*** Going on an indefinite hiatus after I read up about Metacircular Evaluator.
+
 # To-do
 Make a sicp lecture guide to show which parts of the lecture correspond to which parts of the book.
